@@ -1,5 +1,4 @@
-import bundle
-ibun = bundle.Isis.BundleObservationSolveSettings
+import libisispy
 from enum import Enum
 
 instrument_pointing_lookup = {0: 'NoPointingFactors',
@@ -14,15 +13,13 @@ instrument_position_lookup = {0: 'NoPositionFactors',
                               3: 'PositionVelocityAcceleration',
                               4: 'AllPositionCoefficients'}
 
-print('reloaded')
-
 class BundleAdjust():
 
     def __init__(self, settings={}):
         """
         Create a bundle adjustment
         """
-        self._bwrapper = bundle.Isis
+        self._bwrapper = libisispy.Isis
         self.settings = self._bwrapper.BundleSettings()
         self.obs_settings = self._bwrapper.BundleObservationSolveSettings()
         self.set_solve_options(settings)
@@ -143,7 +140,7 @@ class BundleAdjust():
 
     def bundle(self, in_net, in_flist, print_summary=False):
         self.settings.setObservationSolveOptions([self.obs_settings])
-        ba = bundle.Isis.BundleAdjust(self.settings, in_net, in_flist, print_summary)
+        ba = libisispy.Isis.BundleAdjust(self.settings, in_net, in_flist, print_summary)
         info = ba.solveCholeskyBR()
         results = info.bundleResults()
 
